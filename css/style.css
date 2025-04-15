@@ -1,0 +1,10 @@
+/*Imagene en el NavBar */
+.imgNavBar{
+    height: 42px;
+    width: 42px;
+    margin: 0 8px
+}
+
+body{
+    background-color: gray;
+}

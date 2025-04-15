@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Temach Gaming</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Estilos propios -->
+  <link rel="stylesheet" href="css/style.css">
+
+</head>
+<body>
+
+  <!-- NavBarPrincipal -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Tematch Gaming</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        <!-- ⬇️ Links del navbar: invitados o usuarios (versión comentada en PHP) -->
+        <!-- <?php
+        // session_start();
+        // $usuario = $_SESSION['usuario'] ?? null;
+        ?> -->
+
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <!-- <?php if (!isset($usuario)): ?> -->
+            <!-- Vista INVITADO -->
+            <li class="nav-item"><a class="nav-link" href="#">Iniciar Sesión</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Registrarse</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Catálogo</a></li>
+          
+          <!-- <?php else: ?> -->
+             <!-- Vista USUARIO LOGUEADO -->
+            <li class="nav-item"><a class="nav-link" href="#">Página Principal</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Catálogo</a></li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                <img src="img/NavBar/Usuario.png" width="42" height="42" class="rounded-circle">
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" href="#">Ver perfil</a></li>
+                <li><a class="dropdown-item" href="#">Cerrar sesión</a></li>
+              </ul>
+            </li>
+          <!-- <?php endif; ?> -->
+        </ul>
+    
+        <!-- RedesSociales -->
+        <div class="d-flex justify-content-center align-items-center mx-auto gap-2">
+          <a class="nav-link" aria-current="page" href="#"><img class="imgNavBar" src="img/NavBar/LogoFacebook.png" alt="LogoFacebook"></a>
+          <a class="nav-link" aria-current="page" href="#"><img class="imgNavBar" src="img/NavBar/LogoInstagram.png" alt="LogoInstagram"></a>
+          <a class="nav-link" aria-current="page" href="#"><img class="imgNavBar" src="img/NavBar/LogoX.png" alt="LogoX"></a>
+        </div>
+    
+        <form class="d-flex">
+          <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search">
+          <button class="btn btn-outline-danger" type="submit">Buscar</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+  <!-- Fin de NavBarPrincipal -->
+
+  <!--Fondo-->
+  <div class="text-center">
+    <img src="img/FondoTematch.png" with="512" height="512" class="rounded" alt="...">
+  </div>
+
+  <!--Proximos Videojuegos-->
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <!--Footer-->
+  <footer class="bg-body-tertiary text-center text-lg-start">
+    <!-- Copyright -->
+    <div class="d-flex justify-content-end p-3 bg-dark">
+      <a class="nav-link text-light" href="#">Soporte</a>
+    </div>
+    <!-- Copyright -->
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Script propio -->
+  <script src="js/main.js"></script>
+</body>
+</html>
