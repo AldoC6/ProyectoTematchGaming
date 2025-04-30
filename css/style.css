@@ -1,10 +1,12 @@
 /*Imagene en el NavBar */
-.imgNavBar{
-    height: 42px;
-    width: 42px;
-    margin: 0 8px
-}
+.imgNavBar {
+    height: 32px;
+    width: 32px;
+    margin: 0 5px;
+  }
 
 body{
-    background-color: gray;
+
+    background: gray url("../img/FondoTematch.png") no-repeat center center fixed !important;
+    background-size: 350px;
 }
