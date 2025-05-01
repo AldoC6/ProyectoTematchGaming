@@ -1,4 +1,4 @@
-<footer class="bg-dark text-light text-center py-3 mt-5">
+<footer class="bg-dark text-light text-center py-3">
   <div class="container d-flex justify-content-end">
     <a class="nav-link text-light" href="soporte.php">Soporte</a>
   </div>

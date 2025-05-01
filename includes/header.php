@@ -5,6 +5,7 @@ if (session_status() === PHP_SESSION_NONE) {
 include("conexion.php");
 
 $usuario = $_SESSION['usuario'] ?? null;
+$rol = $_SESSION['rol'] ?? null;
 ?>
 
 <!DOCTYPE html>
@@ -15,16 +16,18 @@ $usuario = $_SESSION['usuario'] ?? null;
   <title>Temach Gaming</title>
 
   <link rel="stylesheet" href="/ProyectoTematchGaming/css/style.css">
+  <link rel="stylesheet" href="/ProyectoTematchGaming/css/styleAdmin.css">
 
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/d1e737fca6.js" crossorigin="anonymous"></script>
 </head>
 
-<body>
+<body class="fondo">
   <!-- NAVBAR -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="index.php">Tematch Gaming</a>
+      <a class="navbar-brand" href="/ProyectoTematchGaming/index.php">Tematch Gaming</a>
 
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
         <span class="navbar-toggler-icon"></span>
@@ -35,12 +38,12 @@ $usuario = $_SESSION['usuario'] ?? null;
         <!-- Enlaces y redes a la izquierda -->
         <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-center">
           <?php if (!$usuario): ?>
-            <li class="nav-item"><a class="nav-link" href="login.php">Iniciar Sesión</a></li>
-            <li class="nav-item"><a class="nav-link" href="registrarse.php">Registrarse</a></li>
-            <li class="nav-item"><a class="nav-link" href="catalogo.php">Catálogo</a></li>
+            <li class="nav-item"><a class="nav-link" href="/ProyectoTematchGaming/login.php">Iniciar Sesión</a></li>
+            <li class="nav-item"><a class="nav-link" href="/ProyectoTematchGaming/registrarse.php">Registrarse</a></li>
+            <li class="nav-item"><a class="nav-link" href="/ProyectoTematchGaming/catalogo.php">Catálogo</a></li>
           <?php else: ?>
-            <li class="nav-item"><a class="nav-link" href="index.php">Página Principal</a></li>
-            <li class="nav-item"><a class="nav-link" href="catalogo.php">Catálogo</a></li>
+            <li class="nav-item"><a class="nav-link" href="/ProyectoTematchGaming/index.php">Página Principal</a></li>
+            <li class="nav-item"><a class="nav-link" href="/ProyectoTematchGaming/index.php">Catálogo</a></li>
           <?php endif; ?>
 
           <!-- Redes sociales -->
@@ -61,7 +64,7 @@ $usuario = $_SESSION['usuario'] ?? null;
           <?php if ($usuario): ?>
           <div class="dropdown me-2">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-              <img src="img/NavBar/Usuario.png" width="32" height="32" class="rounded-circle">
+              <img src="/ProyectoTematchGaming/img/NavBar/Usuario.png" width="32" height="32" class="rounded-circle">
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
               <li><a class="dropdown-item" href="perfil.php">Ver perfil</a></li>
