@@ -67,8 +67,8 @@ $rol = $_SESSION['rol'] ?? null;
               <img src="/ProyectoTematchGaming/img/NavBar/Usuario.png" width="32" height="32" class="rounded-circle">
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
-              <li><a class="dropdown-item" href="perfil.php">Ver perfil</a></li>
-              <li><a class="dropdown-item" href="logout.php">Cerrar sesión</a></li>
+              <li><a class="dropdown-item" href="/ProyectoTematchGaming/perfil.php">Ver perfil</a></li>
+              <li><a class="dropdown-item" href="/ProyectoTematchGaming/logout.php">Cerrar sesión</a></li>
             </ul>
           </div>
           <?php endif; ?>
