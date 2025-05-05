@@ -61,8 +61,12 @@ html, body {
       <input type="Date" class="form-control" name ="fecha"> <!-- <--- Nombre del date-->
     </div>
     <div class="mb-3">
-      <label for="exampleInputEmail1" class="form-label">Descripción</label>
+      <label class="form-label">Descripción</label>
       <input type="text" class="form-control" name ="descripcion"> <!-- <--- Nombre del input-->
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Ruta de la imagen (ej: imagenesJuego/juego.jpg)</label>
+      <input type="text" class="form-control" name="imagen" placeholder="imagenesJuego/mario.jpg" required>
     </div>
     <button type="submit" class="btn btn-dark" name="btnagregar" value="ok">Agregar</button> <!-- <--- Nombre del button-->
   </form>
@@ -77,6 +81,7 @@ html, body {
           <th scope="col">Género</th>
           <th scope="col">Fecha Lanzamiento</th>
           <th scope="col">Descripción</th>
+          <th scope="col">imagen</th>
           <th scope="col">Acciones</th>
         </tr>
       </thead>
@@ -95,6 +100,7 @@ html, body {
             <td><?= $datos ->nombre?></td>
             <td><?= $datos ->fecha_lanzamiento?></td>
             <td><?= $datos ->descripcion?></td>
+            <td><?= $datos ->imagen?></td>
             <td>
               <a href="" class="btn btn-small btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal<?=$datos->id?>"><i class="fa-solid fa-pen-to-square"></i></a>
               <a href="añadir_juegos.php?id=<?= $datos->id ?>" onclick="return confirmar()" class="btn btn-small btn-danger"><i class="fa-solid fa-trash"></i></a>
@@ -114,8 +120,7 @@ html, body {
                 <div class="modal-body">
                   <form class="col-2" method="POST">
 
-                  <input type="hidden" name="txtid" value="<?= $datos ->id?>">
-                  
+                    <input type="hidden" name="txtid" value="<?= $datos ->id?>">
                     <div class="mb-3">
                       <label class="form-label">Nombre</label>
                       <input type="text" class="form-control" name ="nombre" value="<?= $datos->nombreJ?>">
@@ -140,6 +145,10 @@ html, body {
                     <div class="mb-3">
                       <label for="exampleInputEmail1" class="form-label">Descripción</label>
                       <input type="text" class="form-control" name ="descripcion" value="<?= $datos->descripcion?>">
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Ruta de imagen del juego</label>
+                      <input type="text" class="form-control" name="imagen" value="<?= $datos ->imagen ?>" required>
                     </div>
                     <button type="submit" class="btn btn-dark" name="btnmodificar" value="ok">Editar</button>
                   </form>

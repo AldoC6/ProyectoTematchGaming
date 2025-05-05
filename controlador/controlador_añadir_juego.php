@@ -7,12 +7,13 @@ if(!empty($_POST["btnagregar"])){ // <-- nombre del boton de "añadir_juegos.php
     $genero = $_POST["txtgenero"];
     $fecha = $_POST["fecha"];
     $descripcion = $_POST["descripcion"];
+    $imagen = $_POST["imagen"];
 
     if(!empty($_POST["nombre"]) and !empty($_POST["txtgenero"]) and !empty($_POST["fecha"]) and !empty($_POST["descripcion"])) {
-        $registrar = $conexion -> query(" insert into juegos(nombreJ,id_genero,fecha_lanzamiento,descripcion) values('$nombre', '$genero', '$fecha','$descripcion')");
+        $registrar = $conexion -> query(" insert into juegos(nombreJ,id_genero,fecha_lanzamiento,descripcion, imagen) values('$nombre', '$genero', '$fecha','$descripcion','$imagen')");
 
         if($registrar==true){
-            echo "<div class='alert alert-success'>Producto Registrado</div>";
+            echo "<div class='alert alert-success'>Juego Registrado</div>";
         }else{
             echo "<div class='alert alert-danger'>Error al registrar</div>";
         }

@@ -7,9 +7,11 @@ if(!empty($_POST["btnmodificar"])) {
     $fecha = $_POST["fecha"];
     $descripcion = $_POST["descripcion"];
     $id=$_POST["txtid"];
+    $imagen = $_POST["imagen"];
+
 
     if(!empty($nombre) and !empty($genero) and !empty($fecha) and !empty($descripcion)){
-        $modificar = $conexion->query("update juegos set nombreJ='$nombre', id_genero='$genero', fecha_lanzamiento='$fecha', descripcion='$descripcion' where id = '$id'");
+        $modificar = $conexion->query("update juegos set nombreJ='$nombre', id_genero='$genero', fecha_lanzamiento='$fecha', descripcion='$descripcion', imagen='$imagen' where id = '$id'");
         if($modificar==true){
             echo "<div class='alert alert-success'>Juego Editado</div>";
         }else{
