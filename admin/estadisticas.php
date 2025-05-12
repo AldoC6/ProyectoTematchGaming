@@ -1,5 +1,14 @@
 <!--La linea 2 representa el inicio de la estructura html5 y el navbar. includes/header.php -->
-<?php include("../includes/header.php"); ?>
+<?php 
+session_start();
+if (!isset($_SESSION['id']) || $_SESSION['rol'] != '1') {
+    header("Location: ../index.php");
+    exit();
+}
+
+include("../includes/header.php"); 
+
+?>
 <!--Inicio de Body -->
 <style>
 html, body {

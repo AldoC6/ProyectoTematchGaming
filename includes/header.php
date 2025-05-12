@@ -4,7 +4,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 include("conexion.php");
 
-$usuario = $_SESSION['usuario'] ?? null;
+$usuario = $_SESSION['id'] ?? null;
 $rol = $_SESSION['rol'] ?? null;
 ?>
 
@@ -43,7 +43,7 @@ $rol = $_SESSION['rol'] ?? null;
             <li class="nav-item"><a class="nav-link" href="/ProyectoTematchGaming/catalogo.php">Catálogo</a></li>
           <?php else: ?>
             <li class="nav-item"><a class="nav-link" href="/ProyectoTematchGaming/index.php">Página Principal</a></li>
-            <li class="nav-item"><a class="nav-link" href="/ProyectoTematchGaming/index.php">Catálogo</a></li>
+            <li class="nav-item"><a class="nav-link" href="/ProyectoTematchGaming/catalogo.php">Catálogo</a></li>
           <?php endif; ?>
 
           <!-- Redes sociales -->
@@ -68,7 +68,7 @@ $rol = $_SESSION['rol'] ?? null;
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
               <li><a class="dropdown-item" href="/ProyectoTematchGaming/perfil.php">Ver perfil</a></li>
-              <li><a class="dropdown-item" href="/ProyectoTematchGaming/logout.php">Cerrar sesión</a></li>
+              <li><a class="dropdown-item" href="/ProyectoTematchGaming/includes/reset.php">Cerrar sesión</a></li>
             </ul>
           </div>
           <?php endif; ?>
