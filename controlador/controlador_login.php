@@ -11,6 +11,7 @@ if (!empty($_POST["iniciar"])) {
         if ($datos = $sql->fetch_object()) {
             $_SESSION["id"] = $datos->id;
             $_SESSION["rol"] = $datos->id_rol;
+            $_SESSION["usuario"] = $datos ->Usuario;
 
             if ($datos->id_rol == 1) {
                 header("Location: admin/vista_admin.php");

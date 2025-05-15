@@ -1,6 +1,16 @@
 <?php
 include("includes/header.php");
 
+if (isset($_GET['id'])) {
+    $id_juego = intval($_GET['id']); // Así tienes el ID disponible
+} else {
+    // Si no viene en la URL, redirige o lanza error
+    echo "<script>alert('Juego no especificado.'); window.location.href = 'index.php';</script>";
+    exit();
+}
+
+
+
 $id = $_GET['id'] ?? null;
 
 if ($id) {
@@ -124,16 +134,55 @@ $query = "SELECT juegos.*, generos.nombre AS nombre_genero FROM juegos JOIN gene
   </div>
 </div>
 
-<script>
-  const stars = document.querySelectorAll('.star');
-  stars.forEach(star => {
-    star.addEventListener('click', () => {
-      const rating = star.dataset.value;
-      stars.forEach(s => {
-        s.classList.toggle('selected', s.dataset.value <= rating);
-      });
+<!-- Modal para invitados -->
+<div class="modal fade" id="modalInvitado" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title">Acceso restringido</h5></div>
+      <div class="modal-body">Debes registrarte para calificar.</div>
+      <div class="modal-footer">
+        <a href="registrarse.php" class="btn btn-primary">Registrarse</a>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
-      // Puedes enviar el rating al servidor aquí con AJAX
+<!-- Modal para confirmar calificación -->
+<div class="modal fade" id="modalConfirmar" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title">Confirmar calificación</h5></div>
+      <div class="modal-body">¿Estás seguro de calificar con <span id="valorSeleccionado"></span> estrella(s)?</div>
+      <div class="modal-footer">
+        <?php echo "<!-- ID del juego: $id_juego -->"; ?>
+        <form id="formCalificar" method="POST" action="/ProyectoTematchGaming/controlador/guardar_calif.php">
+          <input type="hidden" name="id_juego" value="<?php echo $id_juego; ?>">
+          <input type="hidden" name="estrellas" id="inputEstrellas">
+          <button type="submit" class="btn btn-success">Sí, calificar</button>
+        </form>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  document.querySelectorAll(".star").forEach(star => {
+    star.addEventListener("click", function () {
+      const valor = this.getAttribute("data-value");
+      const esRegistrado = <?php echo isset($_SESSION['usuario']) && $_SESSION['rol'] == 2 ? 'true' : 'false'; ?>;
+
+      if (esRegistrado) {
+        // Mostrar modal de confirmación
+        document.getElementById("valorSeleccionado").innerText = valor;
+        document.getElementById("inputEstrellas").value = valor;
+        new bootstrap.Modal(document.getElementById('modalConfirmar')).show();
+      } else {
+        // Mostrar modal para invitados
+        new bootstrap.Modal(document.getElementById('modalInvitado')).show();
+      }
     });
   });
 </script>
