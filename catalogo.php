@@ -2,167 +2,199 @@
 <?php include("includes/header.php"); ?>
 <!--Inicio de Body -->
 <div class="mt-5">
-    <h3 class="text-center text-white">Juegos</h3>
+    <h3 class="text-center text-white">Juegos Destacados</h3>
 </div>
 <div class="container mt-2 p-5">
-    <div class="row mb-3">
-        <div class="col-md-3 mb-2">  <label for="genero" class="form-label text-white">Filtrar por género:</label>
-            <select class="form-select" id="genero" name="genero">
-                <option value="">Todos los géneros</option>
-                <option value="Terror">Terror</option>
-                <option value="Infantil">Infantil</option>
-                <option value="Survival">Survival</option>
-                <option value="Acción">Acción</option>
-                <option value="Historia">Historia</option>
-                <option value="Souls-Like">Souls-Like</option>
+    <div class="row mb-3 p-3 rounded" style="background-color: #2c3034;">
+        <div class="col-md-4 mb-2">
+            <label for="destacados-filtro-genero" class="form-label text-white">Género:</label>
+            <select class="form-select form-select-sm" id="destacados-filtro-genero">
+                <option value="">Todos</option>
+                <?php
+                // Opcional: Poblar géneros directamente desde la tabla 'generos'
+                // if (isset($conexion) && $conexion instanceof mysqli) {
+                //     $sql_todos_generos = "SELECT id, nombre FROM generos ORDER BY nombre ASC";
+                //     $result_todos_generos = $conexion->query($sql_todos_generos);
+                //     if ($result_todos_generos && $result_todos_generos->num_rows > 0) {
+                //         while($row_gen = $result_todos_generos->fetch_assoc()) {
+                //             echo "<option value='" . htmlspecialchars($row_gen['nombre']) . "'>" . htmlspecialchars($row_gen['nombre']) . "</option>";
+                //         }
+                //     }
+                // }
+                // Por ahora, se poblará con JavaScript basado en los juegos destacados cargados.
+                ?>
             </select>
         </div>
-        <div class="col-md-3 mb-2"> <label for="anio" class="form-label text-white">Filtrar por año:</label>
-            <select class="form-select" id="anio" name="anio">
-                <option value="">Todos los años</option>
-                </select>
+        <div class="col-md-4 mb-2">
+            <label for="destacados-filtro-anio" class="form-label text-white">Año:</label>
+            <select class="form-select form-select-sm" id="destacados-filtro-anio">
+                <option value="">Todos</option>
+                {/* Las opciones de año se poblarán dinámicamente con JavaScript */}
+            </select>
         </div>
-        <div class="col-md-3 mb-2"> <label for="orden" class="form-label text-white">Ordenar por:</label>
-            <select class="form-select" id="orden" name="orden">
-                <option value="">Sin ordenar</option>
+        <div class="col-md-4 mb-2">
+            <label for="destacados-filtro-orden" class="form-label text-white">Orden:</label>
+            <select class="form-select form-select-sm" id="destacados-filtro-orden">
+                <option value="">Relevancia (Defecto)</option>
                 <option value="alfabetico_asc">Alfabético (A-Z)</option>
                 <option value="alfabetico_desc">Alfabético (Z-A)</option>
-                <option value="anio_asc">Año (Más antiguo primero)</option> <option value="anio_desc">Año (Más reciente primero)</option> </select>
+                <option value="anio_asc">Año (Más antiguo)</option>
+                <option value="anio_desc">Año (Más reciente)</option>
+            </select>
         </div>
     </div>
-    <div class="row row-cols-1 row-cols-md-3 g-4" id="lista-juegos">
+    <div class="row row-cols-1 row-cols-md-3 g-4" id="juegos-destacados-grid">
         <?php
-        // Supongamos que tienes una conexión a la base de datos llamada $conexion
-        // y una tabla llamada 'juegos' con las columnas 'id', 'nombreJ', 'imagen', 'genero' y 'anio'.
+        if (isset($conexion) && $conexion instanceof mysqli) {
+            $sql_destacados = "SELECT j.id, j.nombreJ, j.imagen, g.nombre AS nombre_genero, YEAR(j.fecha_lanzamiento) AS anio_lanzamiento 
+                               FROM juegos j
+                               LEFT JOIN generos g ON j.id_genero = g.id
+                               WHERE j.nombreJ NOT IN ('Resident Evil 4', 'Outlast') 
+                               ORDER BY j.id DESC LIMIT 9";
+            $result_destacados = $conexion->query($sql_destacados);
 
-        // Ejemplo de datos de juegos (esto se reemplazaría con tu consulta a la base de datos)
-        $juegos_data = [
-            ['id' => 1, 'nombreJ' => 'Balatro', 'imagen' => 'imagenesJuego/Balatro.jpg', 'genero' => 'Historia', 'anio' => 2024],
-            ['id' => 2, 'nombreJ' => 'Dark Souls III', 'imagen' => 'imagenesJuego/darksouls3.jpg', 'genero' => 'Souls-Like', 'anio' => 2016],
-            ['id' => 3, 'nombreJ' => 'Elden Ring', 'imagen' => 'imagenesJuego/EldenRing.jpeg', 'genero' => 'Souls-Like', 'anio' => 2022],
-            ['id' => 4, 'nombreJ' => 'For Honor', 'imagen' => 'imagenesJuego/For_Honor.jpg', 'genero' => 'Acción', 'anio' => 2017],
-            ['id' => 5, 'nombreJ' => 'Grand Theft Auto V', 'imagen' => 'imagenesJuego/GTAV.jpg', 'genero' => 'Acción', 'anio' => 2013],
-            ['id' => 6, 'nombreJ' => 'Minecraft', 'imagen' => 'imagenesJuego/Minecraft.png', 'genero' => 'Infantil', 'anio' => 2011],
-            ['id' => 7, 'nombreJ' => 'Outlast', 'imagen' => 'imagenesJuego/outlast.jpg', 'genero' => 'Terror', 'anio' => 2013],
-            ['id' => 8, 'nombreJ' => 'Red Dead Redemption II', 'imagen' => 'imagenesJuego/RDR2.jpg', 'genero' => 'Acción', 'anio' => 2018],
-            ['id' => 9, 'nombreJ' => 'Resident Evil 4', 'imagen' => 'imagenesJuego/residentevil4.jpg', 'genero' => 'Survival', 'anio' => 2023],
-            // Agrega más juegos aquí con su género y año
-        ];
-
-        foreach ($juegos_data as $row) {
-            echo "
-            <div class='col' data-genero='{$row['genero']}' data-anio='{$row['anio']}' data-nombre='{$row['nombreJ']}'>
-                <div class='card h-100'>
-                    <img src='{$row['imagen']}' class='card-img-top object-fit-cover' style='height: 250px;' alt='{$row['nombreJ']}'>
-                    <div class='card-body text-center'>
-                        <h5 class='card-title'>{$row['nombreJ']}</h5>
-                        <a href='reseña.php?id={$row['id']}' class='btn btn-primary btn-sm'>Ver reseña</a>
+            if ($result_destacados && $result_destacados->num_rows > 0) {
+                while ($row_destacado = $result_destacados->fetch_assoc()) {
+                    echo "
+                    <div class='col' data-genero='" . htmlspecialchars($row_destacado['nombre_genero'] ?? '') . "' data-anio='" . htmlspecialchars($row_destacado['anio_lanzamiento'] ?? '') . "' data-nombre='" . htmlspecialchars($row_destacado['nombreJ'] ?? '') . "'>
+                        <div class='card h-100'>
+                            <img src='" . htmlspecialchars($row_destacado['imagen'] ?? 'path/to/default-image.jpg') . "' class='card-img-top object-fit-cover' style='height: 250px;' alt='" . htmlspecialchars($row_destacado['nombreJ'] ?? 'Juego Destacado') . "'>
+                            <div class='card-body text-center d-flex flex-column'>
+                                <h5 class='card-title'>" . htmlspecialchars($row_destacado['nombreJ'] ?? 'Título no disponible') . "</h5>
+                                <a href='reseña.php?id=" . intval($row_destacado['id']) . "' class='btn btn-primary btn-sm mt-auto'>Ver reseña</a>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            ";
+                    ";
+                }
+            } else {
+                echo "<div class='col-12'><p class='text-white text-center'>No hay juegos destacados para mostrar.</p></div>";
+            }
+        } else {
+            echo "<div class='col-12'><p class='text-white text-center'>Error: La conexión a la base de datos no está disponible para cargar los juegos destacados.</p></div>";
         }
-
-        // El código original con la consulta a la base de datos sería:
-        /*
-        $sql = "SELECT * FROM juegos";
-        $result = $conexion->query($sql);
-        $juegos_data = []; // Necesitarías recolectar los datos para el JavaScript si usas PHP puro para el filtrado inicial de años
-        while ($row = $result->fetch_assoc()) {
-            $juegos_data[] = $row; // Guarda los datos para el script
-            echo "
-            <div class='col' data-genero='{$row['genero']}' data-anio='{$row['anio']}' data-nombre='{$row['nombreJ']}'>
-                <div class='card h-100'>
-                    <img src='{$row['imagen']}' class='card-img-top object-fit-cover' style='height: 250px;' alt='{$row['nombreJ']}'>
-                    <div class='card-body text-center'>
-                        <h5 class='card-title'>{$row['nombreJ']}</h5>
-                        <a href='reseña.php?id={$row['id']}' class='btn btn-primary btn-sm'>Ver reseña</a>
-                    </div>
-                </div>
-            </div>
-            ";
-        }
-        */
         ?>
+    </div>
+    <div id="no-juegos-destacados-filtrados-mensaje" class="text-white text-center col-12 mt-3" style="display: none;">
+        No hay juegos destacados que coincidan con los filtros.
     </div>
 </div>
 
 <script>
-    const filtroGenero = document.getElementById('genero');
-    const filtroAnio = document.getElementById('anio'); // Nuevo selector para el año
-    const filtroOrden = document.getElementById('orden');
-    const listaJuegos = document.getElementById('lista-juegos');
-    let juegos = Array.from(listaJuegos.querySelectorAll('.col')); // Convertir a array para sort
+document.addEventListener('DOMContentLoaded', () => {
+    // --- Selectores y variables para "Juegos Destacados" ---
+    const filtroGeneroDestacados = document.getElementById('destacados-filtro-genero');
+    const filtroAnioDestacados = document.getElementById('destacados-filtro-anio');
+    const filtroOrdenDestacados = document.getElementById('destacados-filtro-orden');
+    const listaJuegosDestacadosContainer = document.getElementById('juegos-destacados-grid');
+    const noJuegosDestacadosFiltradosMensaje = document.getElementById('no-juegos-destacados-filtrados-mensaje');
+    let todosLosJuegosDestacadosOriginales = [];
 
-    // Función para poblar el filtro de años
-    function poblarFiltroAnios() {
-        const aniosUnicos = new Set();
-        juegos.forEach(juego => {
-            aniosUnicos.add(juego.dataset.anio);
-        });
-
-        // Ordenar los años (opcional, pero recomendado)
-        const aniosOrdenados = Array.from(aniosUnicos).sort((a, b) => b - a); // De más reciente a más antiguo
-
-        aniosOrdenados.forEach(anio => {
-            const option = document.createElement('option');
-            option.value = anio;
-            option.textContent = anio;
-            filtroAnio.appendChild(option);
-        });
+    if (listaJuegosDestacadosContainer) {
+        todosLosJuegosDestacadosOriginales = Array.from(listaJuegosDestacadosContainer.querySelectorAll('.col'));
+        // console.log('Juegos Destacados Originales:', todosLosJuegosDestacadosOriginales.length, todosLosJuegosDestacadosOriginales);
+    } else {
+        console.error("Contenedor '#juegos-destacados-grid' no encontrado.");
+        return; 
     }
 
-    // Función para filtrar y ordenar los juegos
-    function filtrarOrdenarJuegos() {
-        const generoSeleccionado = filtroGenero.value;
-        const anioSeleccionado = filtroAnio.value; // Obtener valor del filtro de año
-        const ordenSeleccionado = filtroOrden.value;
+    function poblarFiltroSelect(selectElement, dataAttributeKey, juegosArray, sortNumericDesc = false) {
+        if (!selectElement || juegosArray.length === 0) {
+            return;
+        }
+        const valoresUnicos = new Set();
+        juegosArray.forEach(juegoNode => {
+            if (juegoNode.nodeType === 1 && juegoNode.dataset[dataAttributeKey] && String(juegoNode.dataset[dataAttributeKey]).trim() !== "") {
+                valoresUnicos.add(String(juegoNode.dataset[dataAttributeKey]).trim());
+            }
+        });
+        let valoresOrdenados;
+        if (dataAttributeKey === 'anio' && sortNumericDesc) {
+            valoresOrdenados = Array.from(valoresUnicos).sort((a, b) => parseInt(b) - parseInt(a));
+        } else {
+            valoresOrdenados = Array.from(valoresUnicos).sort((a, b) => a.localeCompare(b));
+        }
+        const valorSeleccionadoAnteriormente = (selectElement.options.length > 0 && selectElement.value !== "") ? selectElement.value : null;
+        while (selectElement.options.length > 1) {
+            selectElement.remove(1);
+        }
+        valoresOrdenados.forEach(valor => {
+            const option = document.createElement('option');
+            option.value = valor;
+            option.textContent = valor;
+            selectElement.appendChild(option);
+        });
+        if (valorSeleccionadoAnteriormente && valoresOrdenados.includes(valorSeleccionadoAnteriormente)) {
+            selectElement.value = valorSeleccionadoAnteriormente;
+        }
+    }
 
-        let juegosFiltrados = juegos.filter(juego => {
-            const generoJuego = juego.dataset.genero;
-            const anioJuego = juego.dataset.anio; // Obtener año del juego
+    function filtrarOrdenarJuegosDestacados() {
+        if (!listaJuegosDestacadosContainer) return;
 
+        const generoSeleccionado = filtroGeneroDestacados ? filtroGeneroDestacados.value : '';
+        const anioSeleccionado = filtroAnioDestacados ? filtroAnioDestacados.value : '';
+        const ordenSeleccionado = filtroOrdenDestacados ? filtroOrdenDestacados.value : '';
+
+        let juegosProcesados = todosLosJuegosDestacadosOriginales.filter(juegoNode => {
+            if (juegoNode.nodeType !== 1) return false; 
+            const generoJuego = (juegoNode.dataset.genero || '').trim();
+            const anioJuego = (juegoNode.dataset.anio || '').trim();
             const cumpleGenero = (generoSeleccionado === '' || generoSeleccionado === generoJuego);
-            const cumpleAnio = (anioSeleccionado === '' || anioSeleccionado === anioJuego); // Comprobar filtro de año
-
+            const cumpleAnio = (anioSeleccionado === '' || anioSeleccionado === anioJuego);
             return cumpleGenero && cumpleAnio;
         });
 
-        // Ordenar los juegos filtrados
         switch (ordenSeleccionado) {
             case 'alfabetico_asc':
-                juegosFiltrados.sort((a, b) => a.dataset.nombre.localeCompare(b.dataset.nombre));
+                juegosProcesados.sort((a, b) => (a.dataset.nombre || '').localeCompare(b.dataset.nombre || ''));
                 break;
             case 'alfabetico_desc':
-                juegosFiltrados.sort((a, b) => b.dataset.nombre.localeCompare(a.dataset.nombre));
+                juegosProcesados.sort((a, b) => (b.dataset.nombre || '').localeCompare(a.dataset.nombre || ''));
                 break;
-            case 'anio_asc': // Nueva opción de orden por año ascendente
-                juegosFiltrados.sort((a, b) => parseInt(a.dataset.anio) - parseInt(b.dataset.anio));
+            case 'anio_asc':
+                juegosProcesados.sort((a, b) => (parseInt(a.dataset.anio) || 0) - (parseInt(b.dataset.anio) || 0));
                 break;
-            case 'anio_desc': // Nueva opción de orden por año descendente
-                juegosFiltrados.sort((a, b) => parseInt(b.dataset.anio) - parseInt(a.dataset.anio));
+            case 'anio_desc':
+                juegosProcesados.sort((a, b) => (parseInt(b.dataset.anio) || 0) - (parseInt(a.dataset.anio) || 0));
                 break;
         }
 
-        // Limpiar la lista y agregar los juegos filtrados y ordenados
-        listaJuegos.innerHTML = '';
-        juegosFiltrados.forEach(juego => listaJuegos.appendChild(juego));
+        listaJuegosDestacadosContainer.innerHTML = ''; 
+        if (juegosProcesados.length > 0) {
+            juegosProcesados.forEach(juego => listaJuegosDestacadosContainer.appendChild(juego));
+            if (noJuegosDestacadosFiltradosMensaje) noJuegosDestacadosFiltradosMensaje.style.display = 'none';
+        } else {
+            if (noJuegosDestacadosFiltradosMensaje) {
+                 noJuegosDestacadosFiltradosMensaje.style.display = 'block';
+            }
+        }
     }
 
-    // Event listeners para los filtros y el orden
-    filtroGenero.addEventListener('change', filtrarOrdenarJuegos);
-    filtroAnio.addEventListener('change', filtrarOrdenarJuegos); // Event listener para el filtro de año
-    filtroOrden.addEventListener('change', filtrarOrdenarJuegos);
-
-    // Poblar el filtro de años al cargar la página
-    document.addEventListener('DOMContentLoaded', () => {
-        poblarFiltroAnios();
-        // Opcional: puedes llamar a filtrarOrdenarJuegos() aquí si quieres aplicar filtros por defecto al cargar
-        // filtrarOrdenarJuegos();
-    });
+    if (todosLosJuegosDestacadosOriginales.length > 0) {
+        if (filtroAnioDestacados) {
+            poblarFiltroSelect(filtroAnioDestacados, 'anio', todosLosJuegosDestacadosOriginales, true);
+            filtroAnioDestacados.addEventListener('change', filtrarOrdenarJuegosDestacados);
+        }
+        if (filtroGeneroDestacados) {
+            poblarFiltroSelect(filtroGeneroDestacados, 'genero', todosLosJuegosDestacadosOriginales);
+            filtroGeneroDestacados.addEventListener('change', filtrarOrdenarJuegosDestacados);
+        }
+        if (filtroOrdenDestacados) {
+            filtroOrdenDestacados.addEventListener('change', filtrarOrdenarJuegosDestacados);
+        }
+        filtrarOrdenarJuegosDestacados(); 
+    } else if (listaJuegosDestacadosContainer) {
+        const mensajePHPPresente = listaJuegosDestacadosContainer.querySelector('p.text-white');
+        if(!mensajePHPPresente && noJuegosDestacadosFiltradosMensaje && !noJuegosDestacadosFiltradosMensaje.textContent.includes("Error")){
+             noJuegosDestacadosFiltradosMensaje.textContent = "No hay juegos destacados disponibles para filtrar.";
+             noJuegosDestacadosFiltradosMensaje.style.display = 'block';
+        } else if (mensajePHPPresente && noJuegosDestacadosFiltradosMensaje) {
+            noJuegosDestacadosFiltradosMensaje.style.display = 'none';
+        }
+    }
+});
 </script>
-
-
 
 
 
