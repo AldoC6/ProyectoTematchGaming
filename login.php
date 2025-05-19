@@ -92,7 +92,7 @@ button {
         <button type="submit" name="iniciar" value="ok">Continuar</button>
       </form>
 
-      <a href="#" class="register">Registrarse</a>
+      <a href="registrarse.php" class="register">Registrarse</a>
     </div>
   </div>
 

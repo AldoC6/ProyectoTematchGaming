@@ -148,6 +148,19 @@ $query = "SELECT juegos.*, generos.nombre AS nombre_genero FROM juegos JOIN gene
   </div>
 </div>
 
+<!-- Modal para Admin -->
+<div class="modal fade" id="modalAdmin" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title">Acceso restringido</h5></div>
+      <div class="modal-body">Administradores no pueden calificar</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Modal para confirmar calificación -->
 <div class="modal fade" id="modalConfirmar" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog">
@@ -173,8 +186,12 @@ $query = "SELECT juegos.*, generos.nombre AS nombre_genero FROM juegos JOIN gene
     star.addEventListener("click", function () {
       const valor = this.getAttribute("data-value");
       const esRegistrado = <?php echo isset($_SESSION['usuario']) && $_SESSION['rol'] == 2 ? 'true' : 'false'; ?>;
+      const esAdmin = <?php echo isset($_SESSION['usuario']) && $_SESSION['rol'] == 1 ? 'true' : 'false'; ?>;
 
-      if (esRegistrado) {
+      if(esAdmin){
+        // Mostrar modal para admin
+        new bootstrap.Modal(document.getElementById('modalAdmin')).show();
+      }else if (esRegistrado) {
         // Mostrar modal de confirmación
         document.getElementById("valorSeleccionado").innerText = valor;
         document.getElementById("inputEstrellas").value = valor;

@@ -121,10 +121,7 @@
         <button type="submit" class="register-button" name="registro" value="ok">Continuar</button>
     </form>
     <div class="login-link">
-        ¿Ya tienes una cuenta? <a href="#">Iniciar sesión</a>
-    </div>
-    <div class="login-alternative">
-        O <a href="#">Iniciar sesión</a>
+        ¿Ya tienes una cuenta? <a href="login.php">Iniciar sesión</a>
     </div>
 </div>
 

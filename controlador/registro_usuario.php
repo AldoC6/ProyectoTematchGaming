@@ -19,13 +19,25 @@ if(!empty($_POST["registro"])){
         } elseif ($contraseña !== $confirmar_contraseña) {
             echo '<div class="alert alert-danger">Las contraseñas no coinciden</div>';
         } else {
-            $sql = $conexion -> query(" insert into usuarios(Usuario, Correo, Contrasena, id_rol)values('$usuario','$correo','$contraseña', 2) ");
 
-            if ($sql==1) {
-                echo '<div class="alert alert-success">Usuario Registrado</div>';
-            } else {
-                echo '<div class="alert alert-danger">Error al registrar usuario</div>';
+            $verificarcorreo = $conexion->query("SELECT * FROM usuarios WHERE Correo = '$correo' ");
+            $verificarusuario = $conexion->query("SELECT * FROM usuarios WHERE Usuario = '$usuario' ");
+
+            if($verificarusuario ->num_rows>0){
+                echo "<div class='alert alert-danger'>El nombre de usuario ya está en uso</div>";
+                return 0;
+            }elseif($verificarcorreo ->num_rows>0){
+                echo "<div class='alert alert-danger'>El correo ya está en uso por otro usuario</div>";
+                return 0;
+            }else{
+                $sql = $conexion -> query(" insert into usuarios(Usuario, Correo, Contrasena, id_rol)values('$usuario','$correo','$contraseña', 2) ");
+                if ($sql==1) {
+                    echo '<div class="alert alert-success">Usuario Registrado</div>';
+                } else {
+                    echo '<div class="alert alert-danger">Error al registrar usuario</div>';
+                }
             }
+            
         }
 
     }
