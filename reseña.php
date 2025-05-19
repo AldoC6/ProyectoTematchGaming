@@ -11,22 +11,36 @@ if (isset($_GET['id'])) {
 
 
 
-$id = $_GET['id'] ?? null;
+$query = "SELECT juegos.*, generos.nombre AS nombre_genero 
+          FROM juegos 
+          JOIN generos ON juegos.id_genero = generos.id 
+          WHERE juegos.id = $id_juego";
+$resultado = mysqli_query($conexion, $query);
 
-if ($id) {
-$query = "SELECT juegos.*, generos.nombre AS nombre_genero FROM juegos JOIN generos ON juegos.id_genero = generos.id WHERE juegos.id = $id";
-  $resultado = mysqli_query($conexion, $query);
-
-  if ($resultado && mysqli_num_rows($resultado) > 0) {
+if ($resultado && mysqli_num_rows($resultado) > 0) {
     $juego = mysqli_fetch_assoc($resultado);
-  } else {
-    echo "<p>Juego no encontrado</p>";
-    exit;
-  }
 } else {
-  echo "<p>ID no proporcionado</p>";
-  exit;
+    echo "<p>Juego no encontrado</p>";
+    exit();
 }
+
+// 🔹 Paso 3: Obtener calificación del usuario (si está logueado y es rol 2)
+$calificacion_usuario = 0;
+if (isset($_SESSION['id']) && $_SESSION['rol'] == 2) {
+    $id_usuario = $_SESSION['id'];
+    $sql = $conexion->query("SELECT estrellas FROM calificaciones WHERE id_usuario = $id_usuario AND id_juego = $id_juego");
+    if ($row = $sql->fetch_assoc()) {
+        $calificacion_usuario = intval($row['estrellas']);
+    }
+}
+
+$promedio_calificacion = 0;
+
+$sql = $conexion->query("SELECT AVG(estrellas) AS promedio FROM calificaciones WHERE id_juego = $id_juego");
+if ($row = $sql->fetch_assoc()) {
+    $promedio_calificacion = round($row['promedio'], 1); // Ej: 4.2
+}
+
 ?>
 
 <style>
@@ -93,13 +107,40 @@ $query = "SELECT juegos.*, generos.nombre AS nombre_genero FROM juegos JOIN gene
     width: 40px;
     border-radius: 50%;
   }
+  .star.promedio {
+  font-size: 25px;
+  color: gold;
+}
 </style>
 
 <div class="juego-container">
   <div class="imagen-juego">
+    <div class="average-rating descripcion-juego mb-3 text-center">
+      <strong>Calificación promedio: <?php echo $promedio_calificacion; ?> / 5</strong><br>
+      <?php
+      $estrellas_llenas = floor($promedio_calificacion);
+      $tiene_media = ($promedio_calificacion - $estrellas_llenas) >= 0.5;
+      $estrellas_vacias = 5 - $estrellas_llenas - ($tiene_media ? 1 : 0);
+
+      // Estrellas llenas
+      for ($i = 0; $i < $estrellas_llenas; $i++) {
+          echo '<span class="star.promedio">★</span>';
+      }
+
+      // Media estrella
+      if ($tiene_media) {
+          echo '<span class="star.promedio">☆</span>'; // O puedes poner un ícono de media si lo prefieres
+      }
+
+      // Estrellas vacías
+      for ($i = 0; $i < $estrellas_vacias; $i++) {
+          echo '<span class="star.promedio">☆</span>';
+      }
+      ?>
+    </div>
     <img src="<?php echo $juego['imagen']; ?>" alt="<?php echo $juego['nombreJ']; ?>">
   </div>
-
+  
   <div class="descripcion-juego">
     <h2><?php echo $juego['nombreJ']; ?></h2>
     <p><strong>Fecha de lanzamiento:</strong> <?php echo $juego['fecha_lanzamiento']; ?></p>
@@ -111,11 +152,9 @@ $query = "SELECT juegos.*, generos.nombre AS nombre_genero FROM juegos JOIN gene
     <div class="rate-box">
       <strong>¿Has jugado este juego? ¡Califícalo!</strong>
       <div id="star-rating">
-        <span class="star" data-value="1">☆</span>
-        <span class="star" data-value="2">☆</span>
-        <span class="star" data-value="3">☆</span>
-        <span class="star" data-value="4">☆</span>
-        <span class="star" data-value="5">☆</span>
+        <?php for ($i = 1; $i <= 5; $i++): ?>
+          <span class="star <?php echo ($i <= $calificacion_usuario) ? 'selected' : ''; ?>" data-value="<?php echo $i; ?>">★</span>
+        <?php endfor; ?>
       </div>
     </div>
 
