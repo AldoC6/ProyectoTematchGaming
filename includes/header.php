@@ -56,8 +56,9 @@ $rol = $_SESSION['rol'] ?? null;
 
         <!-- Buscador + dropdown (solo si logueado) -->
         <div class="d-flex align-items-center">
-          <form class="d-flex me-3">
-            <input class="form-control me-2" type="search" placeholder="Buscar">
+          <form class="d-flex me-3" method="GET" action="controlador/buscar.php">
+            <input class="form-control me-2" type="search" name="q" id = "buscador" placeholder="Buscar" list="sugerencias">
+            <datalist id="sugerencias"></datalist>
             <button class="btn btn-outline-danger" type="submit">Buscar</button>
           </form>
 
@@ -77,3 +78,5 @@ $rol = $_SESSION['rol'] ?? null;
       </div>
     </div>
   </nav>
+
+
