@@ -62,6 +62,8 @@ $sql=$conexion->query(" select * from usuarios where id=$id");
 
     <label for="contrasena">Nueva Contraseña:</label>
     <input type="password" name="contrasena" placeholder="Ingrese aqui su nueva contraseña">
+    <label for="contrasena">Confirmar Contraseña</label>
+    <input type="password" name="contrasenaCon" placeholder="Ingrese aqui de nuevo su contraseña">
 
     <input type="hidden" name="id" value="<?= $_SESSION["id"] ?>">
     
